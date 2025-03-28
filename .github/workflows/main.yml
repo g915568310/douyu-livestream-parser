@@ -7,30 +7,41 @@ on:
 
 jobs:
   parse-livestreams:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 环境
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # 检出代码到 runner 中
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4  # 设置 Python 环境
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # 使用 Python 3.9
 
-      - name: Install Dependencies
+      - name: Install Python Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install requests execjs
+          python -m pip install --upgrade pip  # 升级 pip
+          pip install requests execjs  # 安装 Python 依赖
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4  # 设置 Node.js 环境
+        with:
+          node-version: '20'  # 使用 Node.js 20
+          cache: 'npm'  # 启用 npm 缓存以加速依赖安装
+
+      - name: Install Node.js Dependencies (if needed)
+        run: |
+          npm install -g py_mini_racer  # 如果需要全局安装 py_mini_racer
+          # 如果有其他 npm 包需要安装，可以在此处添加命令
 
       - name: Run Script
         run: |
-          python parse_livestreams.py
+          python parse_livestreams.py  # 运行解析脚本
 
       - name: Commit and Push Output
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add output.txt
-          git commit -m "Update output file" || echo "No changes to commit"
-          git push origin HEAD
+          git config --global user.name "github-actions[bot]"  # 设置 Git 用户名
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # 设置 Git 邮箱
+          git add output.txt  # 添加 output.txt 到暂存区
+          git commit -m "Update output file" || echo "No changes to commit"  # 提交更改
+          git push origin HEAD  # 推送到远程仓库
