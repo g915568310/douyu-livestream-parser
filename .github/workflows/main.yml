@@ -29,13 +29,6 @@ jobs:
 
       - name: Commit and Push Output
         run: |
-        steps:
-- uses: actions/checkout@v4
-- uses: actions/setup-node@v4
-  with:
-    node-version: '20'  # 指定版本
-- run: npm install
-- run: npm build
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add output.txt
