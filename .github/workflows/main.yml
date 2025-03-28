@@ -1,47 +1,7 @@
-name: Auto Parse DouYu Livestreams
-
-on:
-  schedule:
-    - cron: "0 */6 * * *"  # 每 6 小时运行一次
-  workflow_dispatch:  # 允许手动触发
-
-jobs:
-  parse-livestreams:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install Dependencies
-        run: |
-          # 升级 pip 并安装 Python 依赖
-          python -m pip install --upgrade pip
-          pip install requests execjs
-
-          # 安装 Node.js 和 npm（如果需要）
-          sudo apt-get update &amp;&amp; sudo apt-get install -y nodejs npm
-
-          # 安装 py_mini_racer（如果需要）
-          npm install -g py_mini_racer
-
-          # 其他可能需要的依赖
-          sudo apt-get install -y jq  # 示例：安装 jq 工具
-          sudo apt-get install -y curl  # 示例：安装 curl 工具
-
-      - name: Run Script
-        run: |
-          python parse_livestreams.py
-
-      - name: Commit and Push Output
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add output.txt
-          git commit -m "Update output file" || echo "No changes to commit"
-          git push origin HEAD
+steps:
+- uses: actions/checkout@v4
+- uses: actions/setup-node@v4
+  with:
+    node-version: '20'  # 指定版本
+- run: npm install
+- run: npm build
