@@ -20,8 +20,19 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          # 升级 pip 并安装 Python 依赖
           python -m pip install --upgrade pip
           pip install requests execjs
+
+          # 安装 Node.js 和 npm（如果需要）
+          sudo apt-get update &amp;&amp; sudo apt-get install -y nodejs npm
+
+          # 安装 py_mini_racer（如果需要）
+          npm install -g py_mini_racer
+
+          # 其他可能需要的依赖
+          sudo apt-get install -y jq  # 示例：安装 jq 工具
+          sudo apt-get install -y curl  # 示例：安装 curl 工具
 
       - name: Run Script
         run: |
